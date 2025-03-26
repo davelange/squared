@@ -28,6 +28,7 @@ class MyScene {
   settings: Record<string, any> = {
     scale: 0.2,
     radius: 0.1,
+    size: 0.3,
   };
   mouse = new THREE.Vector2(0, 0);
   prevMouse = new THREE.Vector2(0, 0);
@@ -52,6 +53,7 @@ class MyScene {
   initSettings() {
     this.gui.add(this.settings, "scale", 0, 10, 0.01);
     this.gui.add(this.settings, "radius", 0, 1, 0.01);
+    this.gui.add(this.settings, "size", 0, 1, 0.01);
   }
 
   updateUniformsFromSettings() {
@@ -68,6 +70,8 @@ class MyScene {
 
     this.updateUniformsFromSettings();
     this.shaderPass.uniforms.time.value = 0;
+    this.shaderPass.uniforms.width.value = window.innerWidth;
+    this.shaderPass.uniforms.height.value = window.innerHeight;
 
     this.composer.addPass(this.shaderPass);
   }
