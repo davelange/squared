@@ -2,10 +2,12 @@ import * as THREE from "three";
 import {
   EffectComposer,
   OrbitControls,
+  RenderPass,
   ShaderPass,
 } from "three/examples/jsm/Addons.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import GUI from "lil-gui";
+import { SquarePass } from "./squarePass";
 
 class MyScene {
   scene = new THREE.Scene();
@@ -23,7 +25,10 @@ class MyScene {
   stats = new Stats();
   controls = new OrbitControls(this.camera, this.canvas);
 
-  settings: Record<string, any> = {};
+  settings: Record<string, any> = {
+    scale: 0.2,
+    radius: 0.1,
+  };
   mouse = new THREE.Vector2(0, 0);
   prevMouse = new THREE.Vector2(0, 0);
 
@@ -44,7 +49,10 @@ class MyScene {
 
   shaderPass: ShaderPass;
 
-  initSettings() {}
+  initSettings() {
+    this.gui.add(this.settings, "scale", 0, 10, 0.01);
+    this.gui.add(this.settings, "radius", 0, 1, 0.01);
+  }
 
   updateUniformsFromSettings() {
     for (const key in this.settings) {
@@ -52,7 +60,17 @@ class MyScene {
     }
   }
 
-  initPost() {}
+  initPost() {
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.addPass(new RenderPass(this.scene, this.camera));
+
+    this.shaderPass = new ShaderPass(SquarePass);
+
+    this.updateUniformsFromSettings();
+    this.shaderPass.uniforms.time.value = 0;
+
+    this.composer.addPass(this.shaderPass);
+  }
 
   setupRenderer() {
     this.renderer = new THREE.WebGLRenderer({
@@ -124,17 +142,17 @@ class MyScene {
     this.controls.update();
 
     // Create brush comp texture
-    //this.renderer.setRenderTarget(this.brushTexture);
-    //this.renderer.render(this.brushScene, this.camera);
+    this.renderer.setRenderTarget(this.brushTexture);
+    this.renderer.render(this.brushScene, this.camera);
 
     // Set shader uniforms
     this.updateUniformsFromSettings();
     //this.shaderPass.uniforms.displacement.value = this.brushTexture.texture;
-    //this.shaderPass.uniforms.time.value = elapsedTime;
+    this.shaderPass.uniforms.time.value = elapsedTime;
 
     // Render
-    //this.composer.render();
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render();
+    //this.renderer.render(this.scene, this.camera);
 
     window.requestAnimationFrame(this.render.bind(this));
   }
