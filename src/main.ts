@@ -26,7 +26,7 @@ class MyScene {
   controls = new OrbitControls(this.camera, this.canvas);
 
   settings: Record<string, any> = {
-    scale: 0.2,
+    scale: 0.4,
     radius: 0.1,
     size: 0.3,
   };

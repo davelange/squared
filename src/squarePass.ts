@@ -40,11 +40,11 @@ export const SquarePass = {
         float aspect = width / height;
         
         // Create fractal coordinates
-        fractalUv *= 20.0;
+        fractalUv *= 30.0;
         fractalUv = fract(fractalUv); // Wrap around 1.0
         fractalUv = fractalUv * 2.0 - 1.0; //Normalize to [-1,1]        
 
-        fractalUv.x *= aspect;
+        //fractalUv.x *= aspect;
 
         // Waves        
         p += 0.17 * cos(scale * 3.7 * p.yx + 1.23 * timeSlow * vec2(2.2,3.4));  
