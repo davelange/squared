@@ -26,9 +26,9 @@ class MyScene {
   controls = new OrbitControls(this.camera, this.canvas);
 
   settings: Record<string, any> = {
-    scale: 0.4,
+    scale: 8.4,
     radius: 0.1,
-    size: 0.3,
+    size: 0.32,
   };
   mouse = new THREE.Vector2(0, 0);
   prevMouse = new THREE.Vector2(0, 0);
