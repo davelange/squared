@@ -26,9 +26,12 @@ class MyScene {
   controls = new OrbitControls(this.camera, this.canvas);
 
   settings: Record<string, any> = {
-    scale: 8.4,
+    waveScale: 2,
     radius: 0.1,
     size: 0.32,
+    squareSizeMin: 0.03,
+    squareSizeMax: 0.6,
+    showAreas: false,
   };
   mouse = new THREE.Vector2(0, 0);
   prevMouse = new THREE.Vector2(0, 0);
@@ -51,9 +54,12 @@ class MyScene {
   shaderPass: ShaderPass;
 
   initSettings() {
-    this.gui.add(this.settings, "scale", 0, 10, 0.01);
+    this.gui.add(this.settings, "waveScale", 0, 10, 0.01);
     this.gui.add(this.settings, "radius", 0, 1, 0.01);
     this.gui.add(this.settings, "size", 0, 1, 0.01);
+    this.gui.add(this.settings, "squareSizeMin", 0, 1, 0.01);
+    this.gui.add(this.settings, "squareSizeMax", 0, 1, 0.01);
+    this.gui.add(this.settings, "showAreas");
   }
 
   updateUniformsFromSettings() {
